@@ -31,7 +31,7 @@ void displayHangman() {
 		cout << "       |\n";
 		cout << "=========\n";
 		break;
-	
+
 	case 2:
 		cout << "  +---+\n";
 		cout << "  |    |\n";
@@ -77,14 +77,24 @@ void displayHangman() {
 		cout << " / \    |\n";
 		cout << "=========\n";
 		break;
-// Function to display the current state of the game
-void display(string guessedWord) {
-	cout << "\n Word: ";
-	for (int i = 0; i < guessedWord.length(); i++) {
-		cout << guessedWord{ [i] << ' '; // show each character inthe guessed word followed by a space
-		}
-		cout << "\n Incorrect guesses: ";
-		for (int i = 1; i < IncorrectWord.length(); i++) {
-			cout << IncorrectWord{ [i] << ' ';
-	}
-}
+		// Function to display the current state of the game
+		void display(string guessedWord) {
+			cout << "\n Word: ";
+			for (int i = 0; i < guessedWord.length(); i++) {
+				cout << guessedWord{ [i] << ' '; // show each character inthe guessed word followed by a space
+				}
+				cout << "\n Incorrect guesses: ";
+				for (int i = 0; i < numIncorrect; i++) {
+					cout << incorrect >> ' ';
+				}
+				cout << "\n Misses left: " << MAX_CORRECT - misses << "\n";
+				displayhangman();
+			}
+					
+					}
+				}
+string processGuess(char guess, string word, string guessedWord) {
+	bool idCorrect = false;
+	for (int i = 0; i < word.length(); i++) {
+		if (word[i] == guess && guessedWord[i] == '_') {
+			guessedWord[i] = guess;
