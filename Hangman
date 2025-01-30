@@ -1,18 +1,17 @@
-#include <iostream>   // Library for input and output,used for things like cin and cout
-#include <string>    // Library that allows us to use and manipulate strings
-#include <ctime>    // Library for general purpose functions, include random numbers
-#include <algorithm> //Library for a virety of functions; here we use it to search arrays
-using namespace std; // this line lets us use standerd library objects without a prefix
-// Global constansts and variables
-const int MAX_INCORRECT = 6; //Maximum wrong guesses allowed
-char incorrevt[MAX_INCORRECT]; //Array to hold incorrect guesses
-int numIncorrect = 0; // counter for the number of incorrect guesses made
-int misses = 0; // counter for the numbers of misses 
+#include <iostream>   
+#include <string>    
+#include <ctime>    
+#include <algorithm> 
+using namespace std; 
 
-// Function to display the hangman drawing based on how many times the player has guessed wrong
+const int MAX_INCORRECT = 6; 
+char incorrevt[MAX_INCORRECT]; 
+int numIncorrect = 0; 
+int misses = 0; 
+
 void displayHangman() {
-	cout << "/n"; // Print a new line for spacing
-	switch (misses) { // Check the number of misses and show the appropriate hangman stage
+	cout << "/n"; 
+	switch (misses) { 
 	case 0:
 		cout << "  +---+\n";
 		cout << "  |    |\n";
@@ -31,7 +30,7 @@ void displayHangman() {
 		cout << "       |\n";
 		cout << "=========\n";
 		break;
-
+	
 	case 2:
 		cout << "  +---+\n";
 		cout << "  |    |\n";
@@ -77,24 +76,98 @@ void displayHangman() {
 		cout << " / \    |\n";
 		cout << "=========\n";
 		break;
-		// Function to display the current state of the game
-		void display(string guessedWord) {
-			cout << "\n Word: ";
-			for (int i = 0; i < guessedWord.length(); i++) {
-				cout << guessedWord{ [i] << ' '; // show each character inthe guessed word followed by a space
-				}
-				cout << "\n Incorrect guesses: ";
-				for (int i = 0; i < numIncorrect; i++) {
-					cout << incorrect >> ' ';
-				}
-				cout << "\n Misses left: " << MAX_CORRECT - misses << "\n";
-				displayhangman();
+// Function to display the current state of the game
+void display(string guessedWord) {
+	cout << "\n Word: ";
+	for (int i = 0; i < guessedWord.length(); i++) {
+		cout << guessedWord{ [i] << ' '; 
+	}
+
+	cout << "\n Incorrect guesses: ";
+
+	for (int i = 0; i < IncorrectWord.length(); i++) {
+		cout << IncorrectWord{ [i] << ' ';
+	}
+		cout << "\n Misses left: " << MAX_INCORRECT - misses << "\n";
+		displayHangman();
+}
+
+	// Function do display the current state of the game
+	void display(string guessedWord) {
+		cout << "\n Word: ";
+		for (int i = 0; i < guessedWord.length(); i++) {
+			cout << guessedWord[i] << ' ';
+		}
+		cout << "\n Incorrect guesses: ";
+		for (int i = 0; i < numIncorrect; i++) {
+			cout << Incorrect << ' ';
+		}
+		cout << "\n Misses left:" << MAX_INCORRECT - misses << "\n";
+		displayHangman();
+	}
+	// Function to check the player's guess againts
+	string processGuess(char guess, string word, string guessedWord) {
+		bool isCorrect = false;
+		for (int i = 0; i < word.length(); i++) {
+			if (word[i] == guess && guessedWord[i] == '_') {
+				guessedWord[i] = guess;
+				isCorrect = true;
 			}
-					
-					}
+		}
+		
+		if (!isCorrect) {
+			
+			bool alreadyGuessed = false;
+
+			
+			for (int i = 0; i < numIncorrect; i++) {
+				if (incorrect[i] == guess) {
+					alreadyGuessed = true;
+					break; 
 				}
-string processGuess(char guess, string word, string guessedWord) {
-	bool idCorrect = false;
-	for (int i = 0; i < word.length(); i++) {
-		if (word[i] == guess && guessedWord[i] == '_') {
-			guessedWord[i] = guess;
+			}
+
+			
+			if (!alreadyGuessed) {
+				incorrect[numIncorrect++] = guess; // Add the new incorrect guess
+				misses++; // Increment the misses counter
+			}
+		}
+		return guessedWord; 
+	}
+	
+	int main() {
+		string wordList[] = { "enoch", "jeremy", "noahstinks", "fart", "kennyisthegoat" };
+		srand(time(0)); 
+		string word = wordList[rand() % 5]; 
+		string guessedWord(word.length(), '_'); 
+
+		cout << "Welcome to Hangman\n"; 
+		while (misses < MAX_INCORRECT && guessedWord != word) {
+			display(guessedWord);
+			cout << "Enter your guess: ";
+			char guess;
+			cin >> guess; 
+
+			string oldGuessedWord = guessedWord; 
+			guessedWord = processGuess(guess, word, guessedWord); 
+
+			if (guessedWord == oldGuessedWord) {
+				cout << "WRONG!\n"; 
+			}
+			else {
+				cout << "Nice!\n"; 
+			}
+		}
+
+		
+		if (guessedWord == word) {
+			cout << "Nice you got the word: " << word << "\n";
+		}
+		else {
+			cout << "Game Over! The word was: " << word << "\n"; 
+			displayHangman();
+		}
+
+		return 0; // End of the Program
+	}//end of main
